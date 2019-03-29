@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<title>GifTastic</title>
+</head>
+<body class="bg-light">
+	<div class="fluid-container m-3">
+		<div class="row mb-2">
+			<div class="col-12" id="buttonsDiv">
+				<button type="button" class="btn btn-primary btn-lg animalButton" data-animal="cat">cat</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-8" id="gifsDiv"></div>
+			<div class="col-4">
+				<form>
+					<div class="form-group">
+						<label for="animalInput">Add an animal</label>
+						<input type="text" class="form-control" id="animalInput" placeholder="Animal">
+					</div>
+					<button type="button" class="btn btn-primary" id="addAnimalButton">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script>
+"use strict";
+
+let topics = ['cat', 'dog', 'rabbit', 'hamster', 'skunk', 'goldfish'];
+let gifs = [];
+
+const buttonTemplate = (animal) => `
+<button type="button" class="btn btn-primary btn-lg mr-2 mb-2 animalButton">${animal}</button>
+`;
+
+const gifTemplate = ({title, rating, still_url, gif_url}) => `
+<div style="display: inline-block">
+	<p>Rating: ${rating}</p>
+	<img src="${still_url}" alt="${title}" data-state="still" data-animate="${gif_url}" data-still="${still_url}">
+</div>
+`;
+
+const animalButtonClickHandler = (event) =>
+{
+	let animal = $(event.currentTarget).text().trim();
+	console.log(animal);
+	const queryUrl = 'https://api.giphy.com/v1/gifs/search?api_key=PETvFqyOmcpUHrypnSUhr1F7RHLIjF49&q='+animal+'&limit=10';
+	$.ajax({
+		url: queryUrl,
+		method: "GET"
+	}).done(function(response){
+		if (response.meta.status === 200)
+		{
+			let dataArray = response.data;
+			dataArray.forEach(gif => 
+			{
+				gifs.push({
+					animal: animal,
+					rating: gif.rating,
+					title: gif.title,
+					still_url: gif.images.fixed_height_still.url,
+					gif_url: gif.images.fixed_height.url,
+				});
+				
+			});
+			console.log(dataArray);
+			console.log(gifs);
+			//gifs = Array.from(new Set(gifs));
+			renderGifs(animal);
+		}
+	});
+}
+
+const renderGifs = (animal) =>
+{
+	let gifsDiv = $("#gifsDiv");
+	gifsDiv.empty();
+	gifsDiv.html(gifs.filter(gif => gif.animal === animal).map(gifTemplate).join(''));
+}
+
+const renderAnimalButtons = () =>
+{
+	let buttonsDiv = $("#buttonsDiv");
+	buttonsDiv.empty();
+	buttonsDiv.html(topics.map(buttonTemplate).join(''));
+	buttonsDiv.find(".animalButton").click(animalButtonClickHandler);
+}
+
+$("#addAnimalButton").click(function()
+{
+	let animalInput = $("#animalInput");
+	let animal = animalInput.val().trim().toLowerCase();
+	if (animal.length > 0)
+	{
+		topics.push(animal);
+		renderAnimalButtons();
+	}
+	animalInput.val('');
+});
+
+$(".animalButton").click(function()
+{
+	
+});
+
+$(document).ready(function(){
+	renderAnimalButtons();
+});
+
+	</script>
+</body>
+</html>
