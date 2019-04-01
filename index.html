@@ -41,7 +41,7 @@ const buttonTemplate = (animal) => `
 const gifTemplate = ({title, rating, still_url, gif_url}) => `
 <div style="display: inline-block">
 	<p>Rating: ${rating}</p>
-	<img src="${still_url}" alt="${title}" data-state="still" data-animate="${gif_url}" data-still="${still_url}">
+	<img class="gif" src="${still_url}" alt="${title}" data-state="still" data-animate="${gif_url}" data-still="${still_url}">
 </div>
 `;
 
@@ -103,10 +103,23 @@ $("#addAnimalButton").click(function()
 	animalInput.val('');
 });
 
-$(".animalButton").click(function()
+$(document.body).on('click','.gif',function (event)
 {
-	
-});
+	let img = $(this);
+	let state = img.attr("data-state");
+	let animateUrl = img.attr("data-animate");
+	let stillUrl = img.attr("data-still");
+	if (state === "still")
+	{
+		img.attr("src", animateUrl);
+		img.attr("data-state", "animate");
+	}
+	if (state === "animate")
+	{
+		img.attr("src", stillUrl);
+		img.attr("data-state", "still");
+	}
+})
 
 $(document).ready(function(){
 	renderAnimalButtons();
