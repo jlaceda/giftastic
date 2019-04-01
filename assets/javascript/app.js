@@ -9,8 +9,8 @@ const buttonTemplate = (animal) => `
 
 const gifTemplate = ({title, rating, still_url, gif_url}) => `
 <div style="display: inline-block">
-	<p>Rating: ${rating}</p>
 	<img class="gif" src="${still_url}" alt="${title}" data-state="still" data-animate="${gif_url}" data-still="${still_url}">
+	<p>Rating: ${rating}</p>
 </div>
 `;
 
