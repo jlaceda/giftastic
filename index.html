@@ -9,22 +9,21 @@
 </head>
 <body class="bg-light">
 	<div class="fluid-container m-3">
+		<div class="row m-2"><h1>🐱GifTastic Animals🐶</h1></div>
 		<div class="row mb-2">
-			<div class="col-12" id="buttonsDiv">
-				<button type="button" class="btn btn-primary btn-lg animalButton" data-animal="cat">cat</button>
-			</div>
+			<div class="col-md-12"><div id="buttonsDiv"></div></div>
 		</div>
 		<div class="row">
-			<div class="col-8" id="gifsDiv"></div>
-			<div class="col-4">
+			<div class="col-md-4 mb-3">
 				<form>
 					<div class="form-group">
 						<label for="animalInput">Add an animal</label>
 						<input type="text" class="form-control" id="animalInput" placeholder="Animal">
 					</div>
-					<button type="button" class="btn btn-primary" id="addAnimalButton">Submit</button>
+					<button type="submit" class="btn btn-primary" id="addAnimalButton">Submit</button>
 				</form>
 			</div>
+			<div class="col-md-8" id="gifsDiv"></div>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
