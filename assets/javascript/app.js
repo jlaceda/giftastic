@@ -1,16 +1,18 @@
 "use strict";
 
-let topics = ['cat', 'dog', 'rabbit', 'hamster', 'skunk', 'goldfish'];
+let topics = ['cat', 'dog', 'bunny', 'hamster', 'skunk', 'goldfish'];
 let gifs = [];
 
 const buttonTemplate = (animal) => `
 <button type="button" class="btn btn-primary btn-lg mr-2 mb-2 animalButton">${animal}</button>
 `;
 
-const gifTemplate = ({title, rating, still_url, gif_url}) => `
-<div style="display: inline-block">
+const gifTemplate = ({title, rating, still_url, gif_url, import_datetime}) => `
+<div style="display: inline-block" class="m-1 border border-primary rounded">
+	<h6 class="px-1">${title}</h6>
 	<img class="gif" src="${still_url}" alt="${title}" data-state="still" data-animate="${gif_url}" data-still="${still_url}">
-	<p>Rating: ${rating}</p>
+	<p class="px-1"><small>Rating: ${rating}</small></p>
+	<p class="px-1"><small>Imported: ${import_datetime}</small></p>
 </div>
 `;
 
@@ -44,7 +46,6 @@ const animalButtonClickHandler = (event) =>
 		let offset = countArray[animalIndex]/10;
 		queryUrl += '&offset=' + offset;
 	}
-	console.log(queryUrl);
 	$.ajax({
 		url: queryUrl,
 		method: "GET"
@@ -60,6 +61,7 @@ const animalButtonClickHandler = (event) =>
 					title: gif.title,
 					still_url: gif.images.fixed_height_still.url,
 					gif_url: gif.images.fixed_height.url,
+					import_datetime: gif.import_datetime,
 				});
 				
 			});
