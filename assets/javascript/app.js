@@ -43,7 +43,7 @@ const animalButtonClickHandler = (event) =>
 	const animalIndex = animalArray.indexOf(animal);
 	if (animalIndex !== -1)
 	{
-		let offset = countArray[animalIndex]/10;
+		let offset = countArray[animalIndex];
 		queryUrl += '&offset=' + offset;
 	}
 	$.ajax({
