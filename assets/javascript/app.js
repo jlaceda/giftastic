@@ -74,7 +74,11 @@ const renderGifs = (animal) =>
 {
 	let gifsDiv = $("#gifsDiv");
 	gifsDiv.empty();
-	gifsDiv.html(gifs.filter(gif => gif.animal === animal).map(gifTemplate).join(''));
+	gifsDiv.html(gifs
+		.filter(gif => gif.animal === animal)
+		.reverse()
+		.map(gifTemplate)
+		.join(''));
 }
 
 const renderAnimalButtons = () =>
