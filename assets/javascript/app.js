@@ -16,6 +16,25 @@ const gifTemplate = ({title, rating, still_url, gif_url, import_datetime}) => `
 </div>
 `;
 
+const renderAnimalButtons = () =>
+{
+	let buttonsDiv = $("#buttonsDiv");
+	buttonsDiv.empty();
+	buttonsDiv.html(topics.map(buttonTemplate).join(''));
+	buttonsDiv.find(".animalButton").click(animalButtonClickHandler);
+}
+
+const renderGifs = animal =>
+{
+	let gifsDiv = $("#gifsDiv");
+	gifsDiv.empty();
+	gifsDiv.html(gifs
+		.filter(gif => gif.animal === animal)
+		.reverse()
+		.map(gifTemplate)
+		.join(''));
+}
+
 const animalButtonClickHandler = (event) =>
 {
 	let animal = $(event.currentTarget).text().trim();
@@ -23,7 +42,9 @@ const animalButtonClickHandler = (event) =>
 	// make arrays of animals and counts;
 	let animalArray = [];
 	let countArray = [];
-	for (let i = 0; i < gifs.length; i++) {
+	// TODO: use array reduce for this maybe?
+	for (let i = 0; i < gifs.length; i++)
+	{
 		const gifAnimal = gifs[i].animal;
 		// if this animal is NOT already in animalArray, add it with count 1
 		const gifAnimalIndex = animalArray.indexOf(gifAnimal);
@@ -70,26 +91,7 @@ const animalButtonClickHandler = (event) =>
 	});
 }
 
-const renderGifs = (animal) =>
-{
-	let gifsDiv = $("#gifsDiv");
-	gifsDiv.empty();
-	gifsDiv.html(gifs
-		.filter(gif => gif.animal === animal)
-		.reverse()
-		.map(gifTemplate)
-		.join(''));
-}
-
-const renderAnimalButtons = () =>
-{
-	let buttonsDiv = $("#buttonsDiv");
-	buttonsDiv.empty();
-	buttonsDiv.html(topics.map(buttonTemplate).join(''));
-	buttonsDiv.find(".animalButton").click(animalButtonClickHandler);
-}
-
-$("#addAnimalButton").click(function(event)
+$("#addAnimalButton").click((event) =>
 {
 	event.preventDefault();
 	let animalInput = $("#animalInput");
@@ -99,11 +101,14 @@ $("#addAnimalButton").click(function(event)
 		topics.push(animal);
 		renderAnimalButtons();
 	}
+	// clear input
 	animalInput.val('');
 });
 
-$(document.body).on('click','.gif',function (event)
+// on click event handler for the gif image
+$(document.body).on('click', '.gif', () =>
 {
+	// 'this' is the gif image
 	let img = $(this);
 	let state = img.attr("data-state");
 	let animateUrl = img.attr("data-animate");
@@ -120,6 +125,5 @@ $(document.body).on('click','.gif',function (event)
 	}
 })
 
-$(document).ready(function(){
-	renderAnimalButtons();
-});
+// render buttons on document ready
+$(renderAnimalButtons());
