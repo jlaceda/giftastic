@@ -106,10 +106,9 @@ $("#addAnimalButton").click((event) =>
 });
 
 // on click event handler for the gif image
-$(document.body).on('click', '.gif', () =>
+$(document.body).on('click', '.gif', (event) =>
 {
-	// 'this' is the gif image
-	let img = $(this);
+	let img = $(event.target);
 	let state = img.attr("data-state");
 	let animateUrl = img.attr("data-animate");
 	let stillUrl = img.attr("data-still");
